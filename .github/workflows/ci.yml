@@ -23,13 +23,13 @@ jobs:
           node-version: "20"
 
       - name: Instalar dependencias
-        working-directory: ./react/frontend
+        working-directory: ./React/frontend
         run: npm ci
 
       - name: Ejecutar linter
-        working-directory: ./react/frontend
+        working-directory: ./React/frontend
         run: npm run lint
 
       - name: Compilar React
-        working-directory: ./react/frontend
+        working-directory: ./React/frontend
         run: npm run build
