@@ -73,3 +73,43 @@ jobs:
 
       - name: Construir imagen backend
         run: docker build -t backend ./python
+  
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - docker
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+
+      - name: Login en GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Construir imagen frontend
+        run: |
+          docker build \
+            -t ghcr.io/${{ github.repository_owner }}/prueba-tecnica-frontend:${{ github.sha }} \
+            ./React/frontend
+
+      - name: Construir imagen backend
+        run: |
+          docker build \
+            -t ghcr.io/${{ github.repository_owner }}/prueba-tecnica-backend:${{ github.sha }} \
+            ./python
+
+      - name: Publicar frontend
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/prueba-tecnica-frontend:${{ github.sha }}
+
+      - name: Publicar backend
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/prueba-tecnica-backend:${{ github.sha }}
