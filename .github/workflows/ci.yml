@@ -10,12 +10,26 @@ on:
       - main
 
 jobs:
-  test-pipeline:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
       - name: Obtener código
         uses: actions/checkout@v4
 
-      - name: Verificar estructura
-        run: ls -la
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias
+        working-directory: ./react/frontend
+        run: npm ci
+
+      - name: Ejecutar linter
+        working-directory: ./react/frontend
+        run: npm run lint
+
+      - name: Compilar React
+        working-directory: ./react/frontend
+        run: npm run build
