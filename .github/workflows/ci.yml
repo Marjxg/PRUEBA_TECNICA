@@ -57,3 +57,19 @@ jobs:
       - name: Ejecutar pruebas
         working-directory: ./python
         run: python -m pytest
+  
+  docker:
+    runs-on: ubuntu-latest
+    needs:
+      - frontend
+      - backend
+
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+
+      - name: Construir imagen frontend
+        run: docker build -t frontend ./React/frontend
+
+      - name: Construir imagen backend
+        run: docker build -t backend ./python
