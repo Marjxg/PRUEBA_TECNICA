@@ -53,3 +53,7 @@ jobs:
       - name: Verificar importación de FastAPI
         working-directory: ./python
         run: python -c "from main import app; print('FastAPI OK')"
+      
+      - name: Ejecutar pruebas
+        working-directory: ./python
+        run: python -m pytest
